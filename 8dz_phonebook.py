@@ -8,7 +8,7 @@ def work_with_phonebook():
 
     phone_book = read_txt(filename)
 
-    while choice != 7:
+    while choice != 8:
 
         if choice == 1:  # "1. Отобразить весь справочник\n"
             print_result(phone_book)
@@ -43,7 +43,12 @@ def work_with_phonebook():
             write_txt(filename, phone_book)
             print("Данные записаны.")
             input("Press Enter to continue...")
-
+        elif choice == 7:
+            line_number = int(input("Введите номер строки для копирования: "))
+            destination_file = input("Введите имя файла назначения: ")
+            copy_line_to_file(phone_book, line_number, destination_file)
+            print("Данные успешно скопированы.")
+            input("Press Enter to continue...")
         choice = show_menu()
 
 
@@ -51,7 +56,7 @@ def work_with_phonebook():
 def show_menu():
     print(
         "╔══════════════════════════════════════╗\n"
-        "║   Телефонный справочник v.24.06.17a  ║\n"
+        "║  Телефонный справочник v.24.06.17a2  ║\n"
         "╠══════════════════════════════════════╣\n"
         "║   Выберите необходимое действие:     ║\n"
         "╠══════════════════════════════════════╣\n"
@@ -61,13 +66,14 @@ def show_menu():
         "║ 4. Добавить абонента/изменить данные ║\n"
         "║ 5. Удалить абонента по фамилии       ║\n"
         "║ 6. Сохранить данные в файл           ║\n"
-        "║ 7. Выход (без сохранения)            ║\n"
+        "║ 7. Скопировать данные в другой файл  ║\n"
+        "║ 8. Выход (без сохранения)            ║\n"
         "╚══════════════════════════════════════╝"
     )
     while True:
         try:
-            choice = int(input("Ваш выбор (1-7): "))
-            if 1 <= choice <= 7:
+            choice = int(input("Ваш выбор (1-8): "))
+            if 1 <= choice <= 8:
                 return choice
             else:
                 choice = 0
@@ -210,6 +216,18 @@ def delete_by_lastname(phone_book, last_name):
             del phone_book[i]
             return True
     return False
+
+
+# 7 ---------- Скопировать строку в другой файл
+def copy_line_to_file(phone_book, line_number, destination_file):
+    if 1 <= line_number <= len(phone_book):
+        entry = phone_book[line_number - 1]
+        with open(destination_file, "a", encoding="utf-8") as file:
+            file.write(
+                f"{entry['Фамилия']},{entry['Имя']},{entry['Телефон']},{entry['Описание']}\n"
+            )
+    else:
+        print("Неверный номер строки.")
 
 
 # ---------- Запуск ---------
