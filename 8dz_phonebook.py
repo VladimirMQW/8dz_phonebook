@@ -111,7 +111,7 @@ def read_txt(filename):
     return phone_book
 
 
-# ---------- Запись файла
+# ---------- Запись файла ----------------  !!!Попробовать обьединить с Переносом записи п.7!!!
 def write_txt(filename_work, phone_book):
     with open(filename_work, "w", encoding="utf-8") as phout:
         for i in range(len(phone_book)):
@@ -220,7 +220,7 @@ def delete_by_lastname(phone_book, last_name):
     return False
 
 
-# 7 ---------- Скопировать строку в другой файл
+# 7 ---------- Скопировать строку в другой файл ---------   !!!Попробовать обьединить с записью в файл!!!
 def copy_line_to_file(phone_book, line_number, filename_destination):
     if 1 <= line_number <= len(phone_book):
         entry = phone_book[line_number - 1]
