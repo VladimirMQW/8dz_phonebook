@@ -1,12 +1,12 @@
 # ---------- Основной модуль
-filename = "phon.txt"
+filename_work = "phon.txt"
 
 
 def work_with_phonebook():
 
     choice = show_menu()
 
-    phone_book = read_txt(filename)
+    phone_book = read_txt(filename_work)
 
     while choice != 8:
 
@@ -27,26 +27,26 @@ def work_with_phonebook():
             user_data = input(
                 "Введите данные через запятую, без пробелов (Фамилия,Имя,Телефон,Описание) \n"
                 "[При совпадении фамилии с существующей, запись будет изменена]: "
-            )
+            )  # Вопрос?
             add_or_change_user(phone_book, user_data)
-            write_txt(filename, phone_book)
+            write_txt(filename_work, phone_book)
             print("Данные успешно добавлены/изменены.")
             input("Press Enter to continue...")
-        elif choice == 5:
+        elif choice == 5:  # 5. Удалить абонента по фамилии
             last_name = str(input("Фамилия: "))
             if delete_by_lastname(phone_book, last_name):
                 print("Данные успешно удалены.")
             else:
                 print("Данные не найдены.")
             input("Press Enter to continue...")
-        elif choice == 6:
-            write_txt(filename, phone_book)
+        elif choice == 6:  # 6. Сохранить данные в файл
+            write_txt(filename_work, phone_book)
             print("Данные записаны.")
             input("Press Enter to continue...")
-        elif choice == 7:
+        elif choice == 7:  # 7. Скопировать данные в другой файл
             line_number = int(input("Введите номер строки для копирования: "))
-            destination_file = input("Введите имя файла назначения: ")
-            copy_line_to_file(phone_book, line_number, destination_file)
+            filename_destination = input("Введите имя файла назначения: ")
+            copy_line_to_file(phone_book, line_number, filename_destination)
             print("Данные успешно скопированы.")
             input("Press Enter to continue...")
         choice = show_menu()
@@ -90,7 +90,7 @@ def show_menu():
 def read_txt(filename):
     phone_book = []
     fields = ["Фамилия", "Имя", "Телефон", "Описание"]
-    with open(filename, "r", encoding="utf-8") as phb:
+    with open(filename_work, "r", encoding="utf-8") as phb:
         for line in phb:
             record = dict(zip(fields, line.split(",")))
             clean_record = {key: value.strip() for key, value in record.items()}
@@ -112,8 +112,8 @@ def read_txt(filename):
 
 
 # ---------- Запись файла
-def write_txt(filename, phone_book):
-    with open(filename, "w", encoding="utf-8") as phout:
+def write_txt(filename_work, phone_book):
+    with open(filename_work, "w", encoding="utf-8") as phout:
         for i in range(len(phone_book)):
             s = ""
             for v in phone_book[i].values():
@@ -194,9 +194,11 @@ def find_by_number(phone_book, number):
 
 # 4 ---------- Добавить/изменить пользователя
 def add_or_change_user(phone_book, user_data):
-    fields = user_data.split(",")
-    print(fields)
-    print(fields[2].isdigit())
+    fields = user_data.split(",")  # Собираем список
+    fields = [item.strip() for item in fields]  # Убираем концевые пробелы
+    print(f"\nДобавляем запись: {fields}")
+    # print(*fields)
+    # print(fields[2].isdigit())
     if len(fields) != 4 or not fields[2].isdigit():
         print("Неверный формат ввода данных.")
         return
@@ -219,10 +221,10 @@ def delete_by_lastname(phone_book, last_name):
 
 
 # 7 ---------- Скопировать строку в другой файл
-def copy_line_to_file(phone_book, line_number, destination_file):
+def copy_line_to_file(phone_book, line_number, filename_destination):
     if 1 <= line_number <= len(phone_book):
         entry = phone_book[line_number - 1]
-        with open(destination_file, "a", encoding="utf-8") as file:
+        with open(filename_destination, "a", encoding="utf-8") as file:
             file.write(
                 f"{entry['Фамилия']},{entry['Имя']},{entry['Телефон']},{entry['Описание']}\n"
             )
