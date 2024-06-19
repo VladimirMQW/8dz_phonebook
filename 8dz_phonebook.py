@@ -187,7 +187,10 @@ def find_by_lastname(phone_book, last_name):
 # 3 ---------- Поиск по номеру телефона
 def find_by_number(phone_book, number):
     for i in range(len(phone_book)):
-        if phone_book[i]["Телефон"] == number:
+        if phone_book[i].get("Телефон", "Нет такого номера") == number:
+            #             dict.get(key[, value])Параметры get() в Python принимает максимум два параметра: key ‒ ключ для поиска в словаре; value (необязательно) ‒ значение, которое будет возвращено, если ключ не найден. Значение по умолчанию — Нет.
+            # Источник: https://pythonstart.ru/dictionary/get-python
+            # if phone_book[i]["Телефон"] == number:
             return phone_book[i]
     return "Не найден"
 
